@@ -1,0 +1,20 @@
+[package]
+name = "tx2-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1.0", features = ["v4", "serde"] }
+thiserror = "1.0"
+anyhow = "1.0"
+winit = "0.29"
+wgpu = "0.19"
+pollster = "0.3"
+env_logger = "0.11"
+log = "0.4"
+tx2-link = { path = "../tx2-link" }
+
+[dev-dependencies]
+# None yet
