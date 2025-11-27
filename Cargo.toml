@@ -2,6 +2,15 @@
 name = "tx2-core"
 version = "0.1.0"
 edition = "2021"
+authors = ["TX-2 Contributors"]
+license = "MIT"
+description = "High-performance native ECS engine for cross-platform applications and games"
+repository = "https://github.com/IreGaddr/tx2-core"
+homepage = "https://github.com/IreGaddr/tx2-core"
+documentation = "https://docs.rs/tx2-core"
+keywords = ["ecs", "game-engine", "wgpu", "entity-component"]
+categories = ["game-development", "graphics", "simulation"]
+readme = "README.md"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
@@ -14,7 +23,7 @@ wgpu = "0.19"
 pollster = "0.3"
 env_logger = "0.11"
 log = "0.4"
-tx2-link = { path = "../tx2-link" }
+tx2-link = { version = "0.1.0", path = "../tx2-link" }
 
 [dev-dependencies]
 # None yet
