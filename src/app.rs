@@ -5,22 +5,34 @@ use winit::{
 };
 use crate::renderer::Renderer;
 
-pub struct App;
+pub struct App {
+    pub renderer: Renderer,
+    event_loop: EventLoop<()>,
+    window: winit::window::Window,
+}
 
 impl App {
-    pub async fn run() {
+    pub async fn new() -> Self {
         env_logger::init();
         let event_loop = EventLoop::new().unwrap();
         let window = WindowBuilder::new().build(&event_loop).unwrap();
 
-        let mut renderer = Renderer::new(&window).await;
+        let renderer = Renderer::new(&window).await;
 
-        event_loop.run(move |event, elwt| {
+        Self {
+            renderer,
+            event_loop,
+            window,
+        }
+    }
+
+    pub fn run(mut self) {
+        self.event_loop.run(move |event, elwt| {
             match event {
                 Event::WindowEvent {
                     ref event,
                     window_id,
-                } if window_id == window.id() => match event {
+                } if window_id == self.window.id() => match event {
                     WindowEvent::CloseRequested
                     | WindowEvent::KeyboardInput {
                         event:
@@ -32,12 +44,12 @@ impl App {
                         ..
                     } => elwt.exit(),
                     WindowEvent::Resized(physical_size) => {
-                        renderer.resize(*physical_size);
+                        self.renderer.resize(*physical_size);
                     }
                     WindowEvent::RedrawRequested => {
-                        match renderer.render() {
+                        match self.renderer.render() {
                             Ok(_) => {}
-                            Err(wgpu::SurfaceError::Lost) => renderer.resize(renderer.size),
+                            Err(wgpu::SurfaceError::Lost) => self.renderer.resize(self.renderer.size),
                             Err(wgpu::SurfaceError::OutOfMemory) => elwt.exit(),
                             Err(e) => eprintln!("{:?}", e),
                         }
@@ -45,7 +57,7 @@ impl App {
                     _ => {}
                 },
                 Event::AboutToWait => {
-                    window.request_redraw();
+                    self.window.request_redraw();
                 }
                 _ => {}
             }
